@@ -26,6 +26,7 @@ const app = {
 			})
 			.catch(err => {
 				alert(err.message);
+                window.location = "index.html"
 			});
 	},
 	render() {
@@ -67,18 +68,21 @@ const app = {
 	remove() {
 		productList.addEventListener("click", e => {
 			const { action, id } = e.target.dataset;
-			if (action === "remove") {
-				if (window.confirm("确定删除?"))
-					axios
-						.delete(
-							`${this.url}api/${this.path}/admin/product/${id}`
-						)
-						.then(res => {
-							this.init();
-						});
-			}
+            if (action !== "remove") return;
+            if (!window.confirm("确定删除?")) return;
+            axios.delete(`${this.url}api/${this.path}/admin/product/${id}`)
+            .then(res => {
+                const { success, message } = res.data;
+                if (!success) throw new Error(message);
+                this.fetchData()
+                alert(message)
+            })
+            .catch(err => {
+                alert(err.message)
+            })
 		});
 	},
 };
 
 app.init();
+ 

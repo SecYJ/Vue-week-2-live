@@ -25,7 +25,7 @@ const app = {
 				if (!res.data.success) throw new Error(res.data.message);
 				const token = res.data.token;
 				const expired = res.data.expired;
-				document.cookie = `hexToken=${token}; expires=${expired}`;
+				document.cookie = `hexToken=${token}; expires=${new Date(expired)}`;
 				window.location.href = "test2.html";
 			})
 			.catch(err => {
